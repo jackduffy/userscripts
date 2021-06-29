@@ -1,14 +1,11 @@
 // ==UserScript==
 // @name         TailwindCSS - Convert REM to PX
-// @namespace    https://github.com/laserred
-// @license      MIT
+// @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  To make working with existing builds and XD designs easier
 // @author       Jack Duffy
 // @match        https://tailwindcss.com/docs/*
 // @icon         https://tailwindcss.com/favicon-32x32.png
-// @updateURL    https://raw.githubusercontent.com/jackduffy/userscripts/main/tailwindcss-rem-to-px.js
-// @downloadURL  https://raw.githubusercontent.com/jackduffy/userscripts/main/tailwindcss-rem-to-px.js
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==
@@ -18,6 +15,8 @@
 
     function convert_rem_to_px() {
         setTimeout(function() {
+          
+          console.log('firing...')
 
             //fetch all td attributes
             var tags = document.getElementsByTagName("td");
@@ -61,7 +60,6 @@
 
         //this function will fire when the body mutates
         var observer = new MutationObserver(function(event) {
-          
             //call the converter
             convert_rem_to_px();
         })
@@ -72,7 +70,10 @@
             attributeFilter: ['class'],
             childList: false,
             characterData: false
-        })
+        });
+      
+        //monitor all click events
+        document.onclick = function(e) {convert_rem_to_px();};
 
         //call the converter (to ensure it's run on page load)
         convert_rem_to_px();
