@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         TailwindCSS - Convert REM to PX
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/jackduffy
 // @version      0.2
 // @description  To make working with existing builds and XD designs easier
 // @author       Jack Duffy
