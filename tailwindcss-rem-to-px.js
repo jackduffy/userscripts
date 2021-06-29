@@ -15,8 +15,6 @@
 
     function convert_rem_to_px() {
         setTimeout(function() {
-          
-          console.log('firing...')
 
             //fetch all td attributes
             var tags = document.getElementsByTagName("td");
