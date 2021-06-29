@@ -1,11 +1,14 @@
 // ==UserScript==
 // @name         TailwindCSS - Convert REM to PX
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/laserred
+// @license      MIT
 // @version      0.1
 // @description  To make working with existing builds and XD designs easier
 // @author       Jack Duffy
 // @match        https://tailwindcss.com/docs/*
 // @icon         https://tailwindcss.com/favicon-32x32.png
+// @updateURL    https://raw.githubusercontent.com/jackduffy/userscripts/main/tailwindcss-rem-to-px.js
+// @downloadURL  https://raw.githubusercontent.com/jackduffy/userscripts/main/tailwindcss-rem-to-px.js
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==
