@@ -55,7 +55,9 @@
 
         // If the clicked element isn't the new clear all mentions button
         if (!event.target.matches('#clear-non-mentions')) return;
-
+        
+        //fetch the hey menu
+        hey_menu = document.getElementById('navigation_readings');
       
         //if the menu still exists
         if (hey_menu) {
