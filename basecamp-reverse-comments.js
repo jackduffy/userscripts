@@ -14,7 +14,7 @@
 
     document.addEventListener("DOMContentLoaded", function() {
 
-        var css = '.thread--comments, .thread__entries { display: flex; flex-direction: column; } .thread--comments { order: 1 } .thread__entries { order: 2; flex-direction: column-reverse; z-index: 10; } .thread__subscriptions { order: 3 }',
+        var css = '.thread--comments, .thread__entries { display: flex; flex-direction: column; } .thread--comments { order: 1 } .thread__entries { order: 2; flex-direction: column-reverse; z-index: 3; } .thread__subscriptions { order: 3 }',
             head = document.head || document.getElementsByTagName('head')[0],
             style = document.createElement('style');
 
