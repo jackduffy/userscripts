@@ -14,6 +14,53 @@
 
     document.addEventListener("DOMContentLoaded", function() {
 
+        function append_stylesheet(css, id = false) {
+
+            //if we've been passed an ID
+            if (id) {
+
+                //attempt to get the element
+                let style = document.getElementById(id);
+
+                //if we've found the element
+                if (style) {
+
+                    //overwrite the previous styles
+                    style.innerHTML = css;
+
+                    //return
+                    return;
+                }
+            }
+
+            //fetch the document head
+            let head = document.head || document.getElementsByTagName('head')[0];
+
+            //create a new style element
+            let style = document.createElement('style');
+
+            if (id) {
+                style.id = id;
+            }
+
+            //add our new style tag
+            head.appendChild(style);
+
+            //set its text type to CSS
+            style.type = 'text/css';
+
+            //if IE8 or below
+            if (style.styleSheet) {
+
+                //Use a fallback method of setting text
+                style.styleSheet.cssText = css;
+            } else {
+
+                //otherwise append the child node
+                style.appendChild(document.createTextNode(css));
+            }
+        }
+
         let first_run = true;
 
         //if this is the first time the script is running on the page
@@ -141,35 +188,16 @@
             }
           `;
 
-            //fetch the document head
-            let head = document.head || document.getElementsByTagName('head')[0];
-
-            //create a new style element
-            let style = document.createElement('style');
-
-            //add our new style tag
-            head.appendChild(style);
-
-            //set its text type to CSS
-            style.type = 'text/css';
-
-            //if IE8 or below
-            if (style.styleSheet) {
-
-                //Use a fallback method of setting text
-                style.styleSheet.cssText = css;
-            } else {
-
-                //otherwise append the child node
-                style.appendChild(document.createTextNode(css));
-            }
+            append_stylesheet(css);
         }
+
+
 
         //this function will append an approrpaite suffix onto the instance number
         function nth(update) {
 
             if (update > 3 && update < 21) {
-                return 'th';
+                return update + 'th';
             }
 
             switch (update % 10) {
@@ -225,6 +253,10 @@
                                     //get position of this string inside the message
                                     let pos = (messages[i].innerHTML).search(tags[ii]);
 
+                                    if ((messages[i].innerHTML).substring((pos - 1), pos) != ">") {
+                                        break;
+                                    }
+
                                     //extract the previous characters prior to the tag
                                     let prev_chars = (messages[i].innerHTML).substring((pos - 5), pos); //get first 5 chars
 
@@ -232,7 +264,7 @@
                                     let id = 'bc-tag-' + tags[ii].replace('#', '');
 
                                     //assume this is the original and build up a HTML ID
-                                    let id_html = 'id="' + id + '" " href="#' + id + '"';
+                                    let id_html = 'id="' + id + '" href="#' + id + '"';
 
                                     //if this tag has already been found
                                     if (original_tags.includes(id)) {
@@ -264,7 +296,7 @@
 
 
                                     //find/replace the plain text tag with our custom element 
-                                    messages[i].innerHTML = messages[i].innerHTML.replace(tags[ii], '<a ' + id_html + ' class="bc-tag">' + tags[ii] + '<a>');
+                                    messages[i].innerHTML = messages[i].innerHTML.replace(tags[ii], '<a ' + id_html + ' data-text="' + tags[ii] + '" class="bc-tag">' + tags[ii] + '<a>');
 
                                     //add a class to indicate to future runs that this message has been parsed
                                     messages[i].classList.add('bc-tag-visited');
@@ -335,9 +367,21 @@
                     //finish off the sidebar HTML
                     sidebar_html = '<div id="bc-tag-sidebar" data-updated="' + Date.now() + '">' + laserred_logo + '<ul>' + sidebar_html + '</ul></div>';
 
+                    //this will contain any custom CSS required to indicate that a tag has been marked off
+                    let completed_tag_css = '';
+
+                    //loop over any completed tags
+                    for (let i = 0; i < completed_tags.length; i++) {
+
+                        //add a CSS rule for this tag
+                        completed_tag_css = completed_tag_css + '.bc-tag[href="#' + completed_tags[i] + '"] {opacity:0.5;text-decoration:line-through!important;}';
+                    }
+
+                    //append these styles
+                    append_stylesheet(completed_tag_css, "completed_tag_css");
+
                     //if this is the first run
                     if (first_run) {
-
 
                         //create a sidebar container div
                         var sidebar_container = document.createElement("div");
@@ -422,6 +466,6 @@
         //look to apply tags every 30s to account for new messages coming in
         setInterval(function() {
             apply_tags();
-        }, 3000);
+        }, 30000);
     });
 })();
